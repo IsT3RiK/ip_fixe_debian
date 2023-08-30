@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Détectez l'interface réseau principale
+INTERFACE=$(ip -4 route list default | awk '{print $5}')
+
+# Si aucune interface n'est trouvée, quittez le script
+if [[ -z $INTERFACE ]]; then
+    echo "Aucune interface réseau principale trouvée."
+    exit 1
+fi
+
+# Obtenez l'adresse IP actuelle
+CURRENT_IP=$(ip -4 addr show $INTERFACE | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+
+# Obtenez le masque de sous-réseau actuel
+NETMASK=$(ip -4 addr show $INTERFACE | grep -oP '(?<=inet\s)\d+(\.\d+){3}/\d+' | cut -d'/' -f2)
+
+# Obtenez la passerelle par défaut
+GATEWAY=$(ip route | grep default | awk '{print $3}')
+
+# Sauvegarde du fichier de configuration actuel
+cp /etc/network/interfaces /etc/network/interfaces.backup
+
+# Écrivez la nouvelle configuration
+cat <<EOL > /etc/network/interfaces
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto $INTERFACE
+iface $INTERFACE inet static
+    address $CURRENT_IP
+    netmask $NETMASK
+    gateway $GATEWAY
+EOL
+
+# Redémarrez le réseau pour appliquer les modifications
+/etc/init.d/networking restart
+
+echo "Adresse IP statique configurée avec succès pour l'interface $INTERFACE."
+
