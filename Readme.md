@@ -1,7 +1,8 @@
-Configuration d'une adresse IP statique avec le script IP Fixe
+# Configuration d'une adresse IP statique avec le script IP Fixe
+
 Ce guide vous montre comment configurer une adresse IP statique sur une machine Debian en utilisant un script qui prend l'adresse IP actuellement attribuée à la machine et la configure comme adresse IP statique.
 
-Tout en un :
+### Tout en un :
 ```
 wget https://raw.githubusercontent.com/IsT3RiK/ip_fixe_debian/main/scriptipfixe -O set_static_ip.sh
 chmod +x set_static_ip.sh
@@ -13,7 +14,7 @@ ip a
 
 
 
-Étapes :
+### Étapes :
 Téléchargez le script:
 Exécutez la commande suivante pour télécharger le script depuis le dépôt GitHub :
 
