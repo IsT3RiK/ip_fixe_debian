@@ -7,7 +7,7 @@ Ce guide vous montre comment configurer une adresse IP statique sur une machine 
 wget https://raw.githubusercontent.com/IsT3RiK/ip_fixe_debian/main/scriptipfixe -O set_static_ip.sh
 chmod +x set_static_ip.sh
 sudo ./set_static_ip.sh
-ip a
+cat /etc/network/interfaces
 ```
 
 
