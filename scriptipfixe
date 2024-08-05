@@ -44,4 +44,3 @@ EOL
 /etc/init.d/networking restart
 
 echo "Adresse IP statique configurée avec succès pour l'interface $INTERFACE."
-
